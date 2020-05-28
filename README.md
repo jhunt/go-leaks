@@ -18,7 +18,7 @@ Except for file descriptors.  This is bad, in production code:
         return false
       }
 
-      return res.Status == 200
+      return res.StatusCode == 200
     }
 
 ... because it leaks a file descriptor.
@@ -29,6 +29,8 @@ Now, with `go-leaks`, we can test for this type of bad behavior:
 
     import (
       "testing"
+
+      "github.com/jhunt/go-leaks"
 
       "my/code/leaky"
     )
@@ -41,5 +43,14 @@ Now, with `go-leaks`, we can test for this type of bad behavior:
         t.Errorf("Ping() leaked one or more file descriptors!")
       }
     }
+
+This test fails.
+
+    →  go test ./examples/leaky/
+    --- FAIL: TestPing (0.65s)
+        leaky_test.go:16: Ping() leaked one or more file descriptors!
+    FAIL
+    FAIL	github.com/jhunt/go-leaks/examples/leaky	0.668s
+    FAIL
 
 Happy Testing!
