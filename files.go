@@ -1,10 +1,10 @@
 package leaks
 
 import (
-	"os"
-	"io/ioutil"
 	"bytes"
 	"fmt"
+	"io/ioutil"
+	"os"
 	"os/exec"
 	"syscall"
 )
@@ -47,20 +47,20 @@ func Files(fn func()) bool {
 func NoFiles(fn func()) bool {
 	out, err := ioutil.TempFile("", "leaks")
 	if err != nil {
-		panic("leaks.NoFiles() failed to run lsof: "+err.Error())
+		panic("leaks.NoFiles() failed to run lsof: " + err.Error())
 	}
 	defer out.Close()
 
 	before, err := lsof(out)
 	if err != nil {
-		panic("leaks.NoFiles() failed to run lsof: "+err.Error())
+		panic("leaks.NoFiles() failed to run lsof: " + err.Error())
 	}
 
 	fn()
 
 	after, err := lsof(out)
 	if err != nil {
-		panic("leaks.NoFiles() railed to re-run lsof: "+err.Error())
+		panic("leaks.NoFiles() railed to re-run lsof: " + err.Error())
 	}
 
 	if len(before) != len(after) {
